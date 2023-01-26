@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="20dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.kyanogen.signatureview.SignatureView
+            android:id="@+id/signature_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:backgroundColor="#ffffff"
+            app:enableSignature="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:penColor="#00AFFE"
+            app:penSize="10dp" />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="#EDEADE"
+            android:text="@string/save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="30dp"
+        android:background="#EDEADE">
+
+        <ImageView
+            android:id="@+id/eraser"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginStart="100dp"
+            android:contentDescription="@string/todo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.55"
+            app:srcCompat="@drawable/eraser" />
+
+        <ImageView
+            android:id="@+id/pen"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/eraser"
+            app:layout_constraintStart_toEndOf="@+id/eraser"
+            app:layout_constraintTop_toTopOf="@+id/eraser"
+            app:layout_constraintVertical_bias="0.52"
+            app:srcCompat="@drawable/pen" />
+
+        <ImageView
+            android:id="@+id/marker"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/pen"
+            app:layout_constraintStart_toEndOf="@+id/pen"
+            app:layout_constraintTop_toTopOf="@+id/pen"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/marker" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginVertical="100dp"
+        android:background="#EDEADE">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/yellow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/color3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/color_back" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/green"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/color2"
+            app:layout_constraintEnd_toEndOf="@+id/yellow"
+            app:layout_constraintStart_toStartOf="@+id/yellow"
+            app:layout_constraintTop_toBottomOf="@+id/yellow"
+            app:shapeAppearance="@style/color_back" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/blue"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/color1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/green"
+            app:shapeAppearance="@style/color_back" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/purple"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/color4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/blue"
+            app:shapeAppearance="@style/color_back" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/color_picker"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:layout_marginVertical="14dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:srcCompat="@drawable/color_picker" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

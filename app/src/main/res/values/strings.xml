@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">pdfnoter</string>
+    <string name="sign_in_with_google"> Sign in with google</string>
+    <string name="client_id">560304840393-le9p4hv7gknm7lmj2l558nj9lqs4jcb6.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pdf">•  PDF</string>
+    <string name="jun_26_2023">•  Jun 26, 2023</string>
+    <string name="optimization_technique">Optimization technique</string>
+    <string name="todo">TODO</string>
+    <string name="new_note">        New Note</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
+    <string name="save">Save</string>
+</resources>

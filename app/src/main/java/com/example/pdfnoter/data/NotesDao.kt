@@ -12,6 +12,9 @@ interface NotesDao {
     @Query("SELECT * FROM notes")
     fun getAll(): List<Notes>
 
-    @Query("SELECT * FROM notes WHERE notesPdfId = :id")
+    @Query("SELECT * FROM notes WHERE pdfId = :id")
     fun getByPdfId(id: String): List<Notes>
+
+    @Query("SELECT * FROM notes WHERE notesId = :id")
+    fun getByNotesId(id: String): Notes
 }

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.text.format.DateFormat
 import android.text.method.LinkMovementMethod
 import android.util.Log
@@ -27,24 +28,22 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
 
 class showpdfFrag : Fragment(), OnClickListener {
 
     private lateinit var binding: FragmentShowpdfBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var actionBarToggle: ActionBarDrawerToggle
-    private lateinit var navView: NavigationView
-    val storage = FirebaseStorage.getInstance()
     var firestore = FirebaseFirestore.getInstance()
-    lateinit var recyclerView: RecyclerView
+    val storage = FirebaseStorage.getInstance()
     private lateinit var NotesListLinkmodel: ArrayList<notesdata>
     private val PICK_IMAGE = 1
-    var checknote : Int = 0
+    var checknote: Int = 0
     var pdfid1: String = ""
-    var docid1: String =""
-    var selectedImageUri : Uri? = Uri.parse("")
+    var docid1: String = ""
+    var selectedImageUri: Uri? = Uri.parse("")
     var imageurl: String = ""
-    private var mDefaultColor = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +59,6 @@ class showpdfFrag : Fragment(), OnClickListener {
         val behavior = BottomSheetBehavior.from(bottomSheet)
         behavior.peekHeight = 400
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        mDefaultColor =0
 
 
         val pdfurl = requireArguments().getString("pdfurl")
@@ -86,14 +84,17 @@ class showpdfFrag : Fragment(), OnClickListener {
         }
 
         binding.upload.setOnClickListener {
-         uploadnotes()
+            uploadnotes()
         }
 
         return view
     }
 
-    fun uploadnotes(){
-        val notestitle= binding.notestitle.text.toString()
+    fun uploadnotes() {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val bitmap_str = preferences.getString("bitmap_uri", "").toString()
+
+        val notestitle = binding.notestitle.text.toString()
         val notestext = binding.notestext.text.toString()
         if (notestext.isNullOrEmpty() && notestitle.isNullOrEmpty()) {
             binding.eventBottomSheet.visibility = View.GONE
@@ -101,46 +102,64 @@ class showpdfFrag : Fragment(), OnClickListener {
             binding.notestitle.text.clear()
             binding.insertedImage.setImageResource(0)
             selectedImageUri = Uri.parse("")
-        }
-        else if (notestext.isNotEmpty() || notestitle.isNotEmpty()) {
-            if (checknote == 0){
+        } else if (notestext.isNotEmpty() || notestitle.isNotEmpty()) {
+            if (checknote == 0) {
                 val docid = requireArguments().getString("docid").toString()
-                if (selectedImageUri.toString().isNullOrEmpty()){
-                    save_note(binding, requireActivity(), checknote,
-                        selectedImageUri!!).savenote(notestitle, notestext, docid, "", "")
-                }else{
-                    upload_image(binding, requireActivity(), checknote,
-                        selectedImageUri!!).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
+                if (selectedImageUri.toString().isNullOrEmpty() && bitmap_str.toString()
+                        .isNullOrEmpty()
+                ) {
+                    save_note(
+                        binding, requireActivity(), checknote,
+                        selectedImageUri!!
+                    ).savenote(notestitle, notestext, docid, "", "")
+                } else if (selectedImageUri.toString().isNotEmpty() && bitmap_str.toString()
+                        .isNullOrEmpty()
+                ) {
+                    upload_image(
+                        binding, requireActivity(), checknote,
+                        selectedImageUri!!
+                    ).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
+                } else if (selectedImageUri.toString().isNullOrEmpty() && bitmap_str.toString()
+                        .isNotEmpty()
+                ) {
+                    upload_drawing(binding, requireActivity(), selectedImageUri!!, checknote).uploaddraw(notestitle, notestext, docid, "")
                 }
-            }else if(checknote == 1){
-                if (selectedImageUri.toString().isNullOrEmpty()){
-                    edit_notes(binding, requireActivity()).editdoc(notestitle, notestext, imageurl, docid1, pdfid1)
-                }else{
+            } else if (checknote == 1) {
+                if (selectedImageUri.toString().isNullOrEmpty()) {
+                    edit_notes(binding, requireActivity()).editdoc(
+                        notestitle,
+                        notestext,
+                        imageurl,
+                        docid1,
+                        pdfid1
+                    )
+                } else {
                     val docid = requireArguments().getString("docid").toString()
-                    upload_image(binding, requireActivity(), checknote,
-                        selectedImageUri!!).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
+                    upload_image(
+                        binding, requireActivity(), checknote,
+                        selectedImageUri!!
+                    ).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
                 }
             }
-        }else{
+        } else {
             Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
         }
     }
 
-//    fun uploaddraw(bitmap: Bitmap){
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//        val data = baos.toByteArray()
-//
-//        val uploadTask = storageRef.putBytes(data)
-//    }
-
-    override fun onClick(notestitle: String, notestext: String, notesimage: String, docid: String, pdfid: String) {
+    override fun onClick(
+        notestitle: String,
+        notestext: String,
+        notesimage: String,
+        drawingImage: String,
+        docid: String,
+        pdfid: String
+    ) {
         binding.eventBottomSheet.visibility = View.VISIBLE
         drawerLayout.closeDrawer(Gravity.RIGHT)
         binding.notestitle.setText(notestitle)
         binding.notestext.setText(notestext)
-        checknote =1
-        pdfid1= pdfid.toString()
+        checknote = 1
+        pdfid1 = pdfid.toString()
         docid1 = docid.toString()
         imageurl = notesimage
 
@@ -151,6 +170,10 @@ class showpdfFrag : Fragment(), OnClickListener {
         Glide.with(this)
             .load(notesimage)
             .into(binding.insertedImage)
+
+        Glide.with(this)
+            .load(drawingImage)
+            .into(binding.insertedDraw)
     }
 
     private fun selectImage() {

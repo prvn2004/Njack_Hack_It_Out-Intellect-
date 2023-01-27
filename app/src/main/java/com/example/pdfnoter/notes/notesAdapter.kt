@@ -20,6 +20,7 @@ interface OnClickListener {
         notestitle: String,
         notestext: String,
         notesimage: String,
+        drawingImage: String,
         docid: String,
         pdfid: String
     )
@@ -73,6 +74,7 @@ class notesAdapter(
                 LinkList.get(position).getmynotestitle(),
                 LinkList.get(position).getmynotestext(),
                 LinkList.get(position).getmynotesimage(),
+                LinkList.get(position).getmynotesdrawing(),
                 LinkList.get(position).getdocid(),
                 LinkList.get(position).getmynotespdfid()
             )

@@ -36,8 +36,9 @@ class upload_image(private var binding: FragmentShowpdfBinding, var context: Con
                 if (checknote == 1){
                     edit_notes(binding, context).editdoc(notestitle, notestext,downloadUrl, docid1, pdfid1)
                 }else{
-                    save_note(binding, context, checknote,
-                        selectedImageUri!!).savenote(notestitle, notestext, notespdfid, downloadUrl, "")
+                    upload_drawing(binding, context, selectedImageUri, checknote).uploaddraw(notestitle, notestext, notespdfid, downloadUrl)
+//                    save_note(binding, context, checknote,
+//                        selectedImageUri!!).savenote(notestitle, notestext, notespdfid, downloadUrl, notesdrawing)
                 }
                 if (progressDialog.isShowing) progressDialog.dismiss()
             }

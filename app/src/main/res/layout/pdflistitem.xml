@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.509"
-        app:srcCompat="@drawable/pdf_logo" />
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/pdfname"
@@ -43,13 +43,13 @@
         android:id="@+id/pdfdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="148dp"
         android:text="@string/jun_26_2023"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/pdf"
         app:layout_constraintStart_toEndOf="@+id/pdf"
         app:layout_constraintTop_toTopOf="@+id/pdf"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/imageView2"

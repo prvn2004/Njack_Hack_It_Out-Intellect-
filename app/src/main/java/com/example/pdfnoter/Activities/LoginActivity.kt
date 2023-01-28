@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.example.pdfnoter.MainActivity
 import com.example.pdfnoter.R
 import com.example.pdfnoter.databinding.ActivityLoginBinding
+import com.example.pdfnoter.notes.save_local
 import com.example.pdfnoter.uploadpdf.ListPdfActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -105,6 +106,7 @@ class LoginActivity : AppCompatActivity() {
                     editor.apply()
 
                     val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                    save_local(this).save_user(uid)
                     WriteNewUser(personName, personEmail, uid)
 
                 val intent = Intent(this, ListPdfActivity::class.java)

@@ -1,6 +1,7 @@
 package com.example.pdfnoter.notes
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -12,8 +13,10 @@ import com.example.pdfnoter.databinding.PdflistitemBinding
 import com.example.pdfnoter.showpdf.showpdfActivity
 import com.example.pdfnoter.showpdf.showpdfFrag
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 interface OnClickListener {
     fun onClick(
@@ -80,11 +83,14 @@ class notesAdapter(
             )
         }
 
+
+
         Glide.with(holder.itemView.context)
             .load(LinkList.get(position).getmynotesimage()).placeholder(R.drawable.placeholder)
             .into(binding.image)
 
     }
+
 
 //    private fun fragmentJump(context: Context, Docid: String) {
 //        val  mFragment = showpdfFrag()

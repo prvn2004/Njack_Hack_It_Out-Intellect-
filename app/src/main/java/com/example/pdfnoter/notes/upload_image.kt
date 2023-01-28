@@ -43,7 +43,7 @@ class upload_image(private var binding: FragmentShowpdfBinding, var context: Con
                 if (progressDialog.isShowing) progressDialog.dismiss()
             }
         }.addOnFailureListener {
-
+            if (progressDialog.isShowing) progressDialog.dismiss()
         }
     }
 

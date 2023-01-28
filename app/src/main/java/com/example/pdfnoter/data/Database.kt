@@ -5,10 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [User::class, PDF::class, Notes::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Notes::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
-    abstract fun pdfDao(): PdfDao
     abstract fun notesDao(): NotesDao
 
     companion object {

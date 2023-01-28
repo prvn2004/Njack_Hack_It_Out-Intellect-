@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:id="@+id/container"
     android:layout_height="match_parent"
-    tools:context=".uploadpdf.ListPdfActivity"
-    android:background="@color/FireBrick">
+    tools:context=".uploadpdf.ListPdfActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

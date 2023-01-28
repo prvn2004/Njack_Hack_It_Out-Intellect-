@@ -13,10 +13,8 @@ class UserViewModel(application: Application, context: Context) : AndroidViewMod
 
     init {
         val userDao = AppDatabase.getDatabase(application).userDao()
-        val pdfDao = AppDatabase.getDatabase(application).pdfDao()
         val notesDao = AppDatabase.getDatabase(application).notesDao()
         repository = UserRepository(context)
-
     }
 
     fun insertUser(user: User) = viewModelScope.launch {
@@ -25,16 +23,9 @@ class UserViewModel(application: Application, context: Context) : AndroidViewMod
 
     fun getUserById(id: String) = repository.getUserById(id)
 
-    fun insertPDF(pdf: PDF) = viewModelScope.launch {
-        repository.insertPDF(pdf)
-    }
-
-    fun getPDFById(id: String) = repository.getPDFById(id)
-
     fun insertNotes(notes: Notes) = viewModelScope.launch {
         repository.insertNotes(notes)
     }
-
     fun getNotesByPdfId(id: String) = repository.getNotesByPdfId(id)
 
     fun getNotesByNotesId(id: String) = repository.getNotesById(id)

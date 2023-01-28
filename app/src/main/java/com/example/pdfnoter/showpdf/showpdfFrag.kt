@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.example.pdfnoter.databinding.FragmentShowpdfBinding
 import com.example.pdfnoter.notes.*
 import com.example.pdfnoter.uploadpdf.Listdata
+import com.example.pdfnoter.uploadpdf.upload_all_notes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -44,6 +45,8 @@ class showpdfFrag : Fragment(), OnClickListener {
     var docid1: String = ""
     var selectedImageUri: Uri? = Uri.parse("")
     var imageurl: String = ""
+    var drawingurl: String = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,62 +90,94 @@ class showpdfFrag : Fragment(), OnClickListener {
             uploadnotes()
         }
 
+        binding.delete.setOnClickListener {
+            save_note(binding, requireActivity(), checknote,
+                selectedImageUri!!).deletedoc(docid1, pdfid1, imageurl, drawingurl)
+        }
+
+        binding.moreOptions.setOnClickListener {
+            val docid = requireArguments().getString("docid").toString()
+            Toast.makeText(requireActivity(), "toast", Toast.LENGTH_SHORT).show()
+            upload_all_notes(requireActivity()).upload_local_notes(docid)
+        }
+
         return view
     }
 
     fun uploadnotes() {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val bitmap_str = preferences.getString("bitmap_uri", "").toString()
 
         val notestitle = binding.notestitle.text.toString()
         val notestext = binding.notestext.text.toString()
-        if (notestext.isNullOrEmpty() && notestitle.isNullOrEmpty()) {
-            binding.eventBottomSheet.visibility = View.GONE
-            binding.notestext.text.clear()
-            binding.notestitle.text.clear()
-            binding.insertedImage.setImageResource(0)
-            selectedImageUri = Uri.parse("")
-        } else if (notestext.isNotEmpty() || notestitle.isNotEmpty()) {
-            if (checknote == 0) {
-                val docid = requireArguments().getString("docid").toString()
-                if (selectedImageUri.toString().isNullOrEmpty() && bitmap_str.toString()
-                        .isNullOrEmpty()
-                ) {
-                    save_note(
-                        binding, requireActivity(), checknote,
-                        selectedImageUri!!
-                    ).savenote(notestitle, notestext, docid, "", "")
-                } else if (selectedImageUri.toString().isNotEmpty() && bitmap_str.toString()
-                        .isNullOrEmpty()
-                ) {
-                    upload_image(
-                        binding, requireActivity(), checknote,
-                        selectedImageUri!!
-                    ).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
-                } else if (selectedImageUri.toString().isNullOrEmpty() && bitmap_str.toString()
-                        .isNotEmpty()
-                ) {
-                    upload_drawing(binding, requireActivity(), selectedImageUri!!, checknote).uploaddraw(notestitle, notestext, docid, "")
+        val docid = requireArguments().getString("docid").toString()
+        val tsLong = System.currentTimeMillis()
+        val ts: Long = tsLong
+        val notesdate: String = DateFormat.format("mm-dd-yyyy", ts).toString()
+
+        if (Internet_check().isConnectionAvailable(requireActivity())) {
+
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val bitmap_str = preferences.getString("bitmap_uri", "").toString()
+
+            if (notestext.isNullOrEmpty() && notestitle.isNullOrEmpty()) {
+                binding.eventBottomSheet.visibility = View.GONE
+                binding.notestext.text.clear()
+                binding.notestitle.text.clear()
+                binding.insertedImage.setImageResource(0)
+                selectedImageUri = Uri.parse("")
+            } else if (notestext.isNotEmpty() || notestitle.isNotEmpty()) {
+                if (checknote == 0) {
+                    if (selectedImageUri.toString().isNullOrEmpty() && bitmap_str.toString()
+                            .isNullOrEmpty()
+                    ) {
+                        save_note(
+                            binding, requireActivity(), checknote,
+                            selectedImageUri!!
+                        ).savenote(notestitle, notestext, docid, "", "")
+                    } else if (selectedImageUri.toString().isNotEmpty() && bitmap_str.toString()
+                            .isNullOrEmpty()
+                    ) {
+                        upload_image(
+                            binding, requireActivity(), checknote,
+                            selectedImageUri!!
+                        ).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
+                    } else if (selectedImageUri.toString().isNullOrEmpty() && bitmap_str.toString()
+                            .isNotEmpty()
+                    ) {
+                        upload_drawing(
+                            binding,
+                            requireActivity(),
+                            selectedImageUri!!,
+                            checknote
+                        ).uploaddraw(notestitle, notestext, docid, "")
+                    }
+                } else if (checknote == 1) {
+                    if (selectedImageUri.toString().isNullOrEmpty()) {
+                        edit_notes(binding, requireActivity()).editdoc(
+                            notestitle,
+                            notestext,
+                            imageurl,
+                            docid1,
+                            pdfid1
+                        )
+                    } else {
+                        val docid = requireArguments().getString("docid").toString()
+                        upload_image(
+                            binding, requireActivity(), checknote,
+                            selectedImageUri!!
+                        ).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
+                    }
                 }
-            } else if (checknote == 1) {
-                if (selectedImageUri.toString().isNullOrEmpty()) {
-                    edit_notes(binding, requireActivity()).editdoc(
-                        notestitle,
-                        notestext,
-                        imageurl,
-                        docid1,
-                        pdfid1
-                    )
-                } else {
-                    val docid = requireArguments().getString("docid").toString()
-                    upload_image(
-                        binding, requireActivity(), checknote,
-                        selectedImageUri!!
-                    ).uploadimage(notestitle, notestext, docid, docid1.toString(), pdfid1)
-                }
+            } else {
+                Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show()
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val bitmap_str = preferences.getString("bitmap_uri", "").toString()
+
+            notes_upload_local(binding, requireActivity()).save_note_local(
+                notestext, notestitle, docid, ts, notesdate, bitmap_str,
+                selectedImageUri.toString()
+            )
         }
     }
 
@@ -162,6 +197,7 @@ class showpdfFrag : Fragment(), OnClickListener {
         pdfid1 = pdfid.toString()
         docid1 = docid.toString()
         imageurl = notesimage
+        drawingurl = drawingImage
 
         highlight_url(requireActivity()).highlightUrls(binding.notestext)
 

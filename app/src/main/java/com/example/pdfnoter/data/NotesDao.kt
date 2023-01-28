@@ -6,6 +6,10 @@ import androidx.room.Query
 
 @Dao
 interface NotesDao {
+
+    @Query("DELETE FROM notes WHERE notesid = :id")
+    fun deleteByUserId(id: Long)
+
     @Insert
     fun insert(notes: Notes)
 

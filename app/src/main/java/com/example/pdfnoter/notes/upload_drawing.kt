@@ -1,5 +1,6 @@
 package com.example.pdfnoter.notes
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -24,6 +25,10 @@ class upload_drawing(private var binding: FragmentShowpdfBinding, var context: C
     val storage = FirebaseStorage.getInstance()
 
     fun uploaddraw(notestitle: String, notestext: String, notespdfid: String, notesimage: String){
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage("uploading drawing......")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         val bitmap_str = preferences.getString("bitmap_uri", "").toString()
 
@@ -42,7 +47,11 @@ class upload_drawing(private var binding: FragmentShowpdfBinding, var context: C
                val drawingurl = it.toString()
                 save_note(binding, context, checknote,
                     selectedImageUri!!).savenote(notestitle, notestext, notespdfid, notesimage, drawingurl)
+                if (progressDialog.isShowing) progressDialog.dismiss()
+
             }}
+        if (progressDialog.isShowing) progressDialog.dismiss()
+
     }
 
 }

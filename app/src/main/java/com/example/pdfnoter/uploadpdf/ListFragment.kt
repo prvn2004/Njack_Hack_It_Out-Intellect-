@@ -17,6 +17,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pdfnoter.Activities.ProfileActivity
 import com.example.pdfnoter.R
 import com.example.pdfnoter.databinding.FragmentListBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -47,6 +48,7 @@ class ListFragment : Fragment() {
         }
 
         getpdfs()
+        profile()
 
         return view
     }
@@ -74,6 +76,14 @@ class ListFragment : Fragment() {
             recyclerView.adapter = ListpdfAdapter(PdfListLinkmodel)
 
             recyclerView.visibility = View.VISIBLE
+        }
+    }
+
+    fun profile(){
+        binding.profile.setOnClickListener {
+            val intent = Intent(activity, ProfileActivity::class.java)
+            requireActivity().startActivity(intent)
+            requireActivity().finish()
         }
     }
 
